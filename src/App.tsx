@@ -15,137 +15,226 @@ import {
   FlatList,
 } from 'react-native';
 
-import {currencyByRupee} from './constants';
-import CurrencyButton from './components/CurrencyButton';
 import Snackbar from 'react-native-snackbar';
 
+import type {PropsWithChildren} from 'react';
+
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {EllipsisHorizontalCircleIcon} from 'react-native-heroicons/outline';
+
+type IconsProps = PropsWithChildren<{
+  name: string;
+}>;
+
+const Icons = ({name}: IconsProps) => {
+  switch (name) {
+    case 'circle':
+      return <Icon name="circle-thin" size={30} color="#F7CD2E" />;
+    case 'cross':
+      return <Icon name="times" size={30} color="#38CC77" />;
+    default:
+      return <Icon name="pencil" size={30} color="#0D0D0D" />;
+  }
+};
 const App = (): JSX.Element => {
-  const [inputValue, setInputValue] = useState('');
-  const [resultValue, setResultValue] = useState('');
-  const [targetCurrency, setTargetCurrency] = useState('');
+  const [isCross, setIsCross] = useState<boolean>(false);
+  const [gameWinner, setGameWinner] = useState<string>('');
+  const [gameState, setGameState] = useState(new Array(9).fill('empty', 0, 9));
 
-  const buttonPressed = (targetValue: Currency) => {
-    if (!inputValue) {
+  const reloadGame = () => {
+    setIsCross(false);
+    setGameWinner('');
+    setGameState(new Array(9).fill('empty', 0, 9));
+  };
+
+  const checkIsWinner = () => {
+    //  checking  winner of the game
+    if (
+      gameState[0] === gameState[1] &&
+      gameState[0] === gameState[2] &&
+      gameState[0] !== 'empty'
+    ) {
+      setGameWinner(`${gameState[0]} won the game! 🥳`);
+    } else if (
+      gameState[3] !== 'empty' &&
+      gameState[3] === gameState[4] &&
+      gameState[4] === gameState[5]
+    ) {
+      setGameWinner(`${gameState[3]} won the game! 🥳`);
+    } else if (
+      gameState[6] !== 'empty' &&
+      gameState[6] === gameState[7] &&
+      gameState[7] === gameState[8]
+    ) {
+      setGameWinner(`${gameState[6]} won the game! 🥳`);
+    } else if (
+      gameState[0] !== 'empty' &&
+      gameState[0] === gameState[3] &&
+      gameState[3] === gameState[6]
+    ) {
+      setGameWinner(`${gameState[0]} won the game! 🥳`);
+    } else if (
+      gameState[1] !== 'empty' &&
+      gameState[1] === gameState[4] &&
+      gameState[4] === gameState[7]
+    ) {
+      setGameWinner(`${gameState[1]} won the game! 🥳`);
+    } else if (
+      gameState[2] !== 'empty' &&
+      gameState[2] === gameState[5] &&
+      gameState[5] === gameState[8]
+    ) {
+      setGameWinner(`${gameState[2]} won the game! 🥳`);
+    } else if (
+      gameState[0] !== 'empty' &&
+      gameState[0] === gameState[4] &&
+      gameState[4] === gameState[8]
+    ) {
+      setGameWinner(`${gameState[0]} won the game! 🥳`);
+    } else if (
+      gameState[2] !== 'empty' &&
+      gameState[2] === gameState[4] &&
+      gameState[4] === gameState[6]
+    ) {
+      setGameWinner(`${gameState[2]} won the game! 🥳`);
+    } else if (!gameState.includes('empty', 0)) {
+      setGameWinner('Draw game... ⌛️');
+    }
+  };
+  const onChangeItem = (itemNumber: number) => {
+    if (gameWinner) {
       return Snackbar.show({
-        text: 'Please enter input value',
-        duration: Snackbar.LENGTH_SHORT,
-        backgroundColor: '#EA7773',
-        textColor: '#000000',
+        text: gameWinner,
+        backgroundColor: '#000000',
+        textColor: '#FFFFFF',
       });
     }
 
-    const inputAmount = parseFloat(inputValue);
-    if (!isNaN(inputAmount)) {
-      const convertedValue = inputAmount * targetValue.value;
-      const result = `${targetValue.symbol}${convertedValue.toFixed(2)}`;
-      setResultValue(result);
-      setTargetCurrency(targetValue.name);
+    if (gameState[itemNumber] === 'empty') {
+      gameState[itemNumber] = isCross ? 'cross' : 'circle';
+      setIsCross(!isCross);
     } else {
-      Snackbar.show({
-        text: 'Please enter valid input value',
-        duration: Snackbar.LENGTH_SHORT,
-        backgroundColor: '#EA7773',
-        textColor: '#000000',
+      return Snackbar.show({
+        text: 'Position is already filled',
+        backgroundColor: 'red',
+        textColor: '#FFF',
       });
     }
+
+    checkIsWinner();
   };
 
   return (
     <>
-      <StatusBar />
-      <View style={styles.container}>
-        <View style={styles.topContainer}>
-          <View style={styles.rupeesContainer}>
-            <Text style={styles.rupee}>₹</Text>
-            <TextInput
-              style={styles.inputAmountField}
-              value={inputValue}
-              onChangeText={setInputValue}
-              keyboardType="numeric"
-              placeholder="Enter Amount"
-            />
+      <SafeAreaView>
+        <StatusBar />
+
+        <EllipsisHorizontalCircleIcon size={30} color="#F7CD2E" />
+        {gameWinner ? (
+          <View style={[styles.playerInfo, styles.winnerInfo]}>
+            <Text style={styles.winnerTxt}>{gameWinner}</Text>
           </View>
-          {resultValue && <Text style={styles.resultTxt}>{resultValue}</Text>}
-        </View>
-        <View style={styles.bottomContainer}>
-          <FlatList
-            numColumns={4}
-            data={currencyByRupee}
-            keyExtractor={item => item.name}
-            renderItem={({item}) => (
-              <Pressable
-                onPress={() => buttonPressed(item)}
-                style={[
-                  styles.button,
-                  targetCurrency === item.name && styles.selected,
-                ]}>
-                <CurrencyButton name={item.name} flag={item.flag} />
-              </Pressable>
-            )}
-          />
-        </View>
-      </View>
+        ) : (
+          <View
+            style={[
+              styles.playerInfo,
+              isCross ? styles.playerX : styles.playerO,
+            ]}>
+            <Text style={styles.gameTurnTxt}>
+              Player {isCross ? 'X' : 'O'}'s turn
+            </Text>
+          </View>
+        )}
+        <FlatList
+          numColumns={3}
+          data={gameState}
+          style={styles.grid}
+          renderItem={({item, index}) => (
+            <Pressable style={styles.card} onPress={() => onChangeItem(index)}>
+              <Icons name={item} />
+            </Pressable>
+          )}
+        />
+        <Pressable style={styles.gameBtn} onPress={reloadGame}>
+          <Text style={styles.gameBtnText}>
+            {gameWinner ? 'Play Again' : 'Reload Game'}
+          </Text>
+        </Pressable>
+      </SafeAreaView>
     </>
   );
 };
 
-export default App;
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#515151',
-  },
-  topContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-  },
-  resultTxt: {
-    fontSize: 32,
-    color: '#000000',
-    fontWeight: '800',
-  },
-  rupee: {
-    marginRight: 8,
+  playerInfo: {
+    height: 56,
 
-    fontSize: 22,
-    color: '#000000',
-    fontWeight: '800',
-  },
-  rupeesContainer: {
     flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
-  },
-  inputAmountField: {
-    height: 40,
-    width: 200,
-    padding: 8,
-    borderWidth: 1,
+
     borderRadius: 4,
-    backgroundColor: '#FFFFFF',
-  },
-  bottomContainer: {
-    flex: 3,
-  },
-  button: {
-    flex: 1,
+    paddingVertical: 8,
+    marginVertical: 12,
+    marginHorizontal: 14,
 
-    margin: 12,
-    height: 60,
-
-    borderRadius: 12,
-    backgroundColor: '#fff',
-    elevation: 2,
     shadowOffset: {
       width: 1,
       height: 1,
     },
     shadowColor: '#333',
-    shadowOpacity: 0.1,
-    shadowRadius: 1,
+    shadowOpacity: 0.2,
+    shadowRadius: 1.5,
   },
-  selected: {
-    backgroundColor: '#ffeaa7',
+  gameTurnTxt: {
+    fontSize: 20,
+    color: '#FFFFFF',
+    fontWeight: '600',
+  },
+  playerX: {
+    backgroundColor: '#38CC77',
+  },
+  playerO: {
+    backgroundColor: '#F7CD2E',
+  },
+  grid: {
+    margin: 12,
+  },
+  card: {
+    height: 100,
+    width: '33.33%',
+
+    alignItems: 'center',
+    justifyContent: 'center',
+
+    borderWidth: 1,
+    borderColor: '#333',
+  },
+  winnerInfo: {
+    borderRadius: 8,
+    backgroundColor: '#38CC77',
+
+    shadowOpacity: 0.1,
+  },
+  winnerTxt: {
+    fontSize: 20,
+    color: '#FFFFFF',
+    fontWeight: '600',
+    textTransform: 'capitalize',
+  },
+  gameBtn: {
+    alignItems: 'center',
+
+    padding: 10,
+    borderRadius: 8,
+    marginHorizontal: 36,
+    backgroundColor: '#8D3DAF',
+  },
+  gameBtnText: {
+    fontSize: 18,
+    color: '#FFFFFF',
+    fontWeight: '500',
   },
 });
+
+export default App;
