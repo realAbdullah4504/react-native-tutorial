@@ -1,7 +1,20 @@
 import React from 'react';
-import {View, Text, StyleSheet, Button} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  FlatList,
+  Pressable,
+} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../App';
+
+import ProductItem from '../components/ProductItem';
+import Seperator from '../components/Separator';
+
+//data
+import {PRODUCTS_LIST} from '../data/constants';
 
 type HomeProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -9,10 +22,16 @@ export default function Home({navigation}: HomeProps) {
   return (
     <>
       <View style={styles.container}>
-        <Text style={styles.smallText}>Home</Text>
-        <Button
-          onPress={() => navigation.replace('Details', {productId: '123'})}
-          title="Details"
+        <FlatList
+          data={PRODUCTS_LIST}
+          keyExtractor={item => item.id}
+          ItemSeparatorComponent={Seperator}
+          renderItem={({item}) => (
+            <Pressable
+              onPress={() => navigation.navigate('Details', {product: item})}>
+              <ProductItem product={item} />
+            </Pressable>
+          )}
         />
       </View>
     </>
@@ -22,10 +41,9 @@ export default function Home({navigation}: HomeProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-  },
-  smallText: {
-    color: '#000000',
+    justifyContent: 'center',
+    padding: 12,
+    backgroundColor: '#FFFFFF',
   },
 });

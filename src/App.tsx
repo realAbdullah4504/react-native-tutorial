@@ -23,10 +23,10 @@ import Details from './screens/Details';
 
 export type RootStackParamList = {
   Home: undefined;
-  Details: {productId: string};
+  Details: {product: Product};
 };
-
 const stack = createNativeStackNavigator<RootStackParamList>();
+
 const App = (): JSX.Element => {
   return (
     <>
@@ -34,9 +34,17 @@ const App = (): JSX.Element => {
         <Text>Hello</Text>
       </View> */}
       <NavigationContainer>
-        <stack.Navigator initialRouteName="Home">
-          <stack.Screen name="Home" component={Home} />
-          <stack.Screen name="Details" component={Details} />
+        <stack.Navigator>
+          <stack.Screen
+            name="Home"
+            component={Home}
+            options={{title: 'Trending Products'}}
+          />
+          <stack.Screen
+            name="Details"
+            component={Details}
+            options={{title: 'Product Details'}}
+          />
         </stack.Navigator>
       </NavigationContainer>
     </>
