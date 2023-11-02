@@ -2,77 +2,76 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import {NavigationContainer} from '@react-navigation/native';
 import Feed from './components/Feed';
 import Article from './components/Article';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {EllipsisHorizontalCircleIcon} from 'react-native-heroicons/outline';
+import Home from './components/Home';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Button,
+  StyleSheet,
+  TouchableNativeFeedback,
+} from 'react-native';
+import ReanimatedExample from './components/ReanimatedExample';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {Provider} from 'react-redux';
+import store from './redux/store';
 
-const Drawer = createDrawerNavigator();
+const Tab = createBottomTabNavigator();
 
-const App = () => {
+const Stack = createNativeStackNavigator();
+
+const StackNavigate = () => {
   return (
-    <NavigationContainer>
-      <Drawer.Navigator>
-        <Drawer.Screen name="Feed" component={Feed} />
-        <Drawer.Screen name="Article" component={Article} />
-      </Drawer.Navigator>
-    </NavigationContainer>
-    // <View>
-    //   <Text>Hello</Text>
-    // </View>
+    <Stack.Navigator
+      initialRouteName="Home"
+      screenOptions={
+        {
+          // headerShown: false,
+        }
+      }>
+      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="Reanimated" component={ReanimatedExample} />
+    </Stack.Navigator>
   );
 };
+function App() {
+  return (
+    <Provider store={store}>
+      <GestureHandlerRootView style={{flex: 1}}>
+        <NavigationContainer>
+          <Tab.Navigator
+            screenOptions={{
+              tabBarStyle: {
+                // elevation: 10,
+                overflow: 'hidden',
+                // width: '80%',
+                borderRadius: 10,
+                // marginHorizontal: '10%',
+                // position: 'absolute',
+              },
+              headerShown: false,
+              tabBarHideOnKeyboard: true,
+              tabBarActiveTintColor: 'black',
+              tabBarActiveBackgroundColor: '#fff',
+            }}>
+            <Tab.Screen
+              name="Feed"
+              component={Feed}
+              options={{
+                tabBarIcon: ({color, size}) => (
+                  <EllipsisHorizontalCircleIcon color={color} size={size} />
+                ),
+              }}
+            />
+            <Tab.Screen name="StackNavigate" component={StackNavigate} />
+            <Tab.Screen name="Article" component={Article} />
+          </Tab.Navigator>
+        </NavigationContainer>
+      </GestureHandlerRootView>
+    </Provider>
+  );
+}
 export default App;
-
-// import React, {useState} from 'react';
-// import {
-//   StyleSheet,
-//   Text,
-//   TextInput,
-//   View,
-//   Button,
-//   ScrollView,
-//   SafeAreaView,
-//   TouchableOpacity,
-//   ImageSourcePropType,
-//   Image,
-//   Pressable,
-//   StatusBar,
-//   FlatList,
-// } from 'react-native';
-
-// import {NavigationContainer} from '@react-navigation/native';
-// import {createNativeStackNavigator} from '@react-navigation/native-stack';
-
-// import Home from './screens/Home';
-// import Details from './screens/Details';
-
-// export type RootStackParamList = {
-//   Home: undefined;
-//   Details: {product: Product};
-// };
-// const stack = createNativeStackNavigator<RootStackParamList>();
-
-// const App = (): JSX.Element => {
-//   return (
-//     <>
-//       {/* <View>
-//         <Text>Hello</Text>
-//       </View> */}
-//       <NavigationContainer>
-//         <stack.Navigator>
-//           <stack.Screen
-//             name="Home"
-//             component={Home}
-//             options={{title: 'Trending Products'}}
-//           />
-//           <stack.Screen
-//             name="Details"
-//             component={Details}
-//             options={{title: 'Product Details'}}
-//           />
-//         </stack.Navigator>
-//       </NavigationContainer>
-//     </>
-//   );
-// };
-
-// const styles = StyleSheet.create({});
-
-// export default App;
