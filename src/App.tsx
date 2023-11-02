@@ -18,6 +18,7 @@ import ReanimatedExample from './components/ReanimatedExample';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Provider} from 'react-redux';
 import store from './redux/store';
+import SubArticle from './components/SubArticle';
 
 const Tab = createBottomTabNavigator();
 
@@ -37,6 +38,22 @@ const StackNavigate = () => {
     </Stack.Navigator>
   );
 };
+
+const Article1 = () => {
+  return (
+    <Stack.Navigator
+      initialRouteName="Article"
+      screenOptions={
+        {
+          // headerShown: false,
+        }
+      }>
+      <Stack.Screen name="Article" component={Article} />
+      <Stack.Screen name="SubArticle" component={SubArticle} />
+    </Stack.Navigator>
+  );
+};
+
 function App() {
   return (
     <Provider store={store}>
@@ -67,7 +84,7 @@ function App() {
               }}
             />
             <Tab.Screen name="StackNavigate" component={StackNavigate} />
-            <Tab.Screen name="Article" component={Article} />
+            <Tab.Screen name="Article1" component={Article1} />
           </Tab.Navigator>
         </NavigationContainer>
       </GestureHandlerRootView>

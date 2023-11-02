@@ -15,14 +15,14 @@ const Home = ({navigation}) => {
   const [bottom, setBottom] = useState(false);
   const items = useSelector(state => state.items.items);
   console.log('items', items);
-  
-  console.log(navigation);
+
+  //   console.log(navigation);
   return (
     <>
       <View style={{flex: 1, alignItems: 'center'}}>
         <TouchableNativeFeedback
           onPress={() => {
-            navigation.navigate('Reanimated');
+            navigation.navigate('Article1', {screen: 'SubArticle'});
           }}>
           <View style={styles.container}>
             <Text>Home</Text>

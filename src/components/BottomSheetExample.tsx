@@ -9,6 +9,7 @@ import BottomSheet, {
 const BottomSheetExample = () => {
   // hooks
   const sheetRef = useRef<BottomSheet>(null);
+  console.log(sheetRef.current);
 
   // variables
   const data = useMemo(
@@ -52,7 +53,8 @@ const BottomSheetExample = () => {
         onChange={handleSheetChange}
         backdropComponent={props => (
           <BottomSheetBackdrop {...props} enableTouchThrough={true} />
-        )}>
+        )}
+        >
         <View style={styles.contentContainer}>
           <BottomSheetTextInput
             value="Awesome 🎉"
