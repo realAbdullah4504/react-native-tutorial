@@ -19,6 +19,8 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Provider} from 'react-redux';
 import store from './redux/store';
 import SubArticle from './components/SubArticle';
+import BottomSheetExample1 from './components/BottomSheetExample1';
+import BottomSheetExample from './components/BottomSheetExample';
 
 const Tab = createBottomTabNavigator();
 
@@ -58,6 +60,8 @@ function App() {
   return (
     <Provider store={store}>
       <GestureHandlerRootView style={{flex: 1}}>
+        {/* <BottomSheetExample1/> */}
+        {/* <BottomSheetExample/> */}
         <NavigationContainer>
           <Tab.Navigator
             screenOptions={{

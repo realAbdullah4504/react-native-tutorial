@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 import BottomSheetExample from './BottomSheetExample';
 import {useSelector, useDispatch} from 'react-redux';
+import { ScrollView } from 'react-native-gesture-handler';
+import BottomSheetExample1 from './BottomSheetExample1';
 
 const Home = ({navigation}) => {
   const [bottom, setBottom] = useState(false);
@@ -37,7 +39,7 @@ const Home = ({navigation}) => {
 
       {bottom && (
         <View>
-          <BottomSheetExample />
+          <BottomSheetExample1 />
         </View>
       )}
     </>

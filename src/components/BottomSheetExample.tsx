@@ -1,91 +1,80 @@
-import React, {useCallback, useRef, useMemo} from 'react';
-import {StyleSheet, View, Text, Button} from 'react-native';
-import BottomSheet, {
-  BottomSheetFlatList,
-  BottomSheetBackdrop,
-  BottomSheetTextInput,
-} from '@gorhom/bottom-sheet';
+import React, {useState} from 'react';
+import {View, Button,StyleSheet, Text} from 'react-native';
 
-const BottomSheetExample = () => {
-  // hooks
-  const sheetRef = useRef<BottomSheet>(null);
-  console.log(sheetRef.current);
+import Modal from 'react-native-modal';
 
-  // variables
-  const data = useMemo(
-    () =>
-      Array(50)
-        .fill(0)
-        .map((_, index) => `index-${index}`),
-    [],
-  );
-  const snapPoints = useMemo(() => ['100%'], []);
-
-  // callbacks
-  const handleSheetChange = useCallback(index => {
-    console.log('handleSheetChange', index);
-  }, []);
-  const handleSnapPress = useCallback(index => {
-    sheetRef.current?.snapToIndex(index);
-  }, []);
-  const handleClosePress = useCallback(() => {
-    sheetRef.current?.close();
-  }, []);
-
-  // render
-  const renderItem = useCallback(
-    ({item}) => (
-      <View style={styles.itemContainer}>
-        <Text>{item}</Text>
-      </View>
-    ),
-    [],
-  );
+const BottomSheet = ({ isVisible, onSwipeComplete }) => {
   return (
-    <View style={styles.container}>
-      {/* <Button title="Snap To 90%" onPress={() => handleSnapPress(2)} />
-      <Button title="Snap To 50%" onPress={() => handleSnapPress(1)} />
-      <Button title="Snap To 25%" onPress={() => handleSnapPress(0)} />
-      <Button title="Close" onPress={() => handleClosePress()} /> */}
-      <BottomSheet
-        ref={sheetRef}
-        snapPoints={snapPoints}
-        onChange={handleSheetChange}
-        backdropComponent={props => (
-          <BottomSheetBackdrop {...props} enableTouchThrough={true} />
-        )}
-        >
-        <View style={styles.contentContainer}>
-          <BottomSheetTextInput
-            value="Awesome 🎉"
-            placeholder="Enter something"
-            onChangeText={text => console.log(text)}
-          />
-        </View>
-        <BottomSheetFlatList
-          data={data}
-          keyExtractor={i => i}
-          renderItem={renderItem}
-          contentContainerStyle={styles.contentContainer}
-        />
-      </BottomSheet>
-    </View>
+    <Modal
+      isVisible={isVisible}
+      onSwipeComplete={onSwipeComplete}
+      swipeDirection={['down']}
+      style={styles.modal}
+    >
+      <View style={styles.content}>
+        <Text>This is the bottom sheet content.</Text>
+        <Text>This is the bottom sheet content.</Text>
+        <Text>This is the bottom sheet content.</Text>
+        <Text>This is the bottom sheet content.</Text>
+        <Text>This is the bottom sheet content.</Text>
+        <Text>This is the bottom sheet content.</Text>
+        <Text>This is the bottom sheet content.</Text>
+        <Text>This is the bottom sheet content.</Text>
+        <Text>This is the bottom sheet content.</Text>
+        <Text>This is the bottom sheet content.</Text>
+        <Text>This is the bottom sheet content.</Text>
+        <Text>This is the bottom sheet content.</Text>
+        <Text>This is the bottom sheet content.</Text>
+        <Text>This is the bottom sheet content.</Text>
+        <Text>This is the bottom sheet content.</Text>
+        <Text>This is the bottom sheet content.</Text>
+        <Text>This is the bottom sheet content.</Text>
+        <Text>This is the bottom sheet content.</Text>
+        <Text>This is the bottom sheet content.</Text>
+        <Text>This is the bottom sheet content.</Text>
+        <Text>This is the bottom sheet content.</Text>
+        <Text>This is the bottom sheet content.</Text>
+        <Text>This is the bottom sheet content.</Text>
+        <Text>This is the bottom sheet content.</Text>
+        <Text>This is the bottom sheet content.</Text>
+        <Text>This is the bottom sheet content.</Text>
+        <Text>This is the bottom sheet content.</Text>
+        <Text>This is the bottom sheet content.</Text>
+        <Text>This is the bottom sheet content.</Text>
+        <Text>This is the bottom sheet content.</Text>
+        
+      </View>
+    </Modal>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 200,
+  modal: {
+    justifyContent: 'flex-end',
+    margin: 0,
   },
-  contentContainer: {
+  content: {
     backgroundColor: 'white',
-  },
-  itemContainer: {
-    padding: 6,
-    margin: 6,
-    backgroundColor: '#eee',
+    padding: 16,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
   },
 });
 
-export default BottomSheetExample;
+export default function BottomSheetExample() {
+  const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
+
+  const toggleBottomSheet = () => {
+    setBottomSheetVisible(!isBottomSheetVisible);
+  };
+
+  return (
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <Button title="Show Bottom Sheet" onPress={toggleBottomSheet} />
+      <BottomSheet
+        isVisible={isBottomSheetVisible}
+        onSwipeComplete={() => setBottomSheetVisible(false)}
+      />
+    </View>
+  );
+}
