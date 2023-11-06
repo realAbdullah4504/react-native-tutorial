@@ -20,6 +20,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import Home from './screens/Home';
 import Details from './screens/Details';
+import AddToCart from './AddToCart';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -30,6 +31,7 @@ const stack = createNativeStackNavigator<RootStackParamList>();
 const App = (): JSX.Element => {
   return (
     <>
+      
       {/* <View>
         <Text>Hello</Text>
       </View> */}
@@ -44,6 +46,11 @@ const App = (): JSX.Element => {
             name="Details"
             component={Details}
             options={{title: 'Product Details'}}
+          />
+          <stack.Screen
+            name="AddToCart"
+            component={AddToCart}
+            options={{title: 'Add to Cart'}}
           />
         </stack.Navigator>
       </NavigationContainer>
