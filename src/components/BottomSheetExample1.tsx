@@ -12,6 +12,8 @@ import {
   GestureDetector,
   GestureHandlerRootView,
 } from 'react-native-gesture-handler';
+import {Surface} from 'react-native-paper';
+import Home from './Home';
 
 const SIZE = 120;
 const {height: SCREEN_HEIGHT} = Dimensions.get('window');
@@ -53,9 +55,8 @@ const App = () => {
     console.log(bottom?.current);
   };
 
-
   return (
-    <View onLayout={onLayout} style={{flex: 1}}>
+    <Surface onLayout={onLayout} style={{flex: 1}}>
       <Button
         title={
           isBottomSheetVisible ? 'Close Bottom Sheet' : 'Open Bottom Sheet'
@@ -74,9 +75,11 @@ const App = () => {
           enablePanDownToClose={true}
           // handleIndicatorStyle={{backgroundColor: 'yellow'}}
         >
-          <View style={styles.container}>
+          {/* <View style={styles.container}>
             <Text style={styles.textContainer}>Bottom Sheet</Text>
-          </View>
+          </View> */}
+            <Home />
+          
           {/* <View  style={styles.wrapper}>
         <GestureDetector gesture={pan}>
           <Animated.View style={[styles.box, animatedStyles]} />
@@ -84,7 +87,7 @@ const App = () => {
       </View> */}
         </BottomSheet>
       )}
-    </View>
+    </Surface>
   );
 };
 const styles = StyleSheet.create({

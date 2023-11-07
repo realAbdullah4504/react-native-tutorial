@@ -6,7 +6,7 @@ import {
   TextInput,
   Keyboard,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 
 const Feed = () => {
@@ -20,7 +20,7 @@ const Feed = () => {
       />
       <View
         style={{
-            flex:1,
+          flex: 1,
           paddingVertical: 10,
           flexDirection: 'row',
           justifyContent: 'center',
@@ -217,7 +217,6 @@ const Feed = () => {
           </View>
         </TouchableOpacity>
       </View>
-
     </ScrollView>
   );
 };
