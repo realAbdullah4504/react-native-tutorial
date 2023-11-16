@@ -8,10 +8,12 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
+import ParallaxCarousel from './ParallaxCarousel';
 
 const Feed = () => {
   return (
     <ScrollView>
+      {/* <ParallaxCarousel/> */}
       <Text>Feed</Text>
       <TextInput
         style={style.input}
