@@ -3,7 +3,8 @@ import {View, Text} from 'react-native';
 import InfiniteScroll from './InfiniteScroll';
 import ParallaxCarousel from './ParallaxCarousel';
 import ReanimatedCarousel from './ReanimatedCarousel';
-import MainComponent from './MainComponent';
+import SwipeableDelete from './SwipeableDelete';
+import MyComponent from './AccordianExample';
 
 const Article = () => {
   return (
@@ -11,7 +12,8 @@ const Article = () => {
     // // <View>
     // {/* //   <Text>Article</Text> */}
     // <ParallaxCarousel />
-    <MainComponent/>
+    // <SwipeableDelete />
+    <MyComponent/>
 
     //  {/* <InfiniteScroll /> */}
     // {/* </View> */}
